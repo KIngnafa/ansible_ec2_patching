@@ -2,6 +2,7 @@ pipeline {
 	agent any 
 	environment {
 		ANSIBLE_HOST_KEY_CHECKING = 'False'
+		ANSIBLE_CFG = '$WORKSPACE/ansible.cfg'
 	}
 	stages {
 		stage ('Generate Inventory file') {
