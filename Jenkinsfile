@@ -15,7 +15,7 @@ pipeline {
 		stage ('Run Patching Playbook') {
 			steps {
 				sh '''
-				ansible-playbook -i /home/ec2-user/ansible_ec2_patching/host.ini patch_ec2.yml
+				ansible-playbook -i $WORKSPACE/host.ini $WORKSPACE/patch_ec2.yml
 				'''
 				}
 			}
