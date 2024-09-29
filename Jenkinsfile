@@ -7,7 +7,7 @@ pipeline {
 		stage ('Generate Inventory file') {
 			steps {
 				sh '''
-				sudo chmod +x /home/ec2-user/ansible_ec2_patching/instance_id.py
+				chmod 700 /home/ec2-user/ansible_ec2_patching/instance_id.py
 				python3 /home/ec2-user/ansible_ec2_patching/instance_id.py
 				'''
 				}
