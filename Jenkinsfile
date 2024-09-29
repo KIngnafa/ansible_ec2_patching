@@ -2,7 +2,7 @@ pipeline {
 	agent any 
 	environment {
 		ANSIBLE_HOST_KEY_CHECKING = 'False'
-		ANSIBLE_CFG = '$WORKSPACE/ansible.cfg'
+		ANSIBLE_CONFIG = '/var/ansible.cfg'
 	}
 	stages {
 		stage ('Generate Inventory file') {
@@ -15,7 +15,7 @@ pipeline {
 
 		stage ('Run Patching Playbook') {
 			steps {
-				sh '''
+				sh label: '', script: 'export ANSIBLE_CONFIG=$ANSIBLE_CONFIG'
 				ansible-playbook -i $WORKSPACE/host.ini $WORKSPACE/patch_ec2.yml
 				'''
 				}
