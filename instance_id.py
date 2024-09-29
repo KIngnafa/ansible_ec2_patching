@@ -5,25 +5,30 @@ import os
 import subprocess
 from botocore.exceptions import ClientError
 
-#setting environemt variables 
-os.environ["AWS_PROFILE"]="default"
-
-#assume role in dev account
+# Assume role in the dev account
 sts_client = boto3.client('sts')
 
+# Requesting temporary credentials
+response_source = sts_client.assume_role(
+    RoleArn="arn:aws:iam::891377046654:role/Engineer",
+    RoleSessionName="Engineer@Dev"
+)
 
-#requesting temporary credentials
-response_source=sts_client.assume_role(
-   RoleArn="arn:aws:iam::891377046654:role/Engineer"
-   RoleSessionName="Engineer@Dev")
+# Extracting temporary credentials
+credentials = response_source['Credentials']
 
-credentials = response['Credentials']
+region_name = 'us-east-1'
 
-session = boto3.Session()
+# Creating a new session using the assumed role credentials
+session = boto3.Session(
+    aws_access_key_id=credentials['AccessKeyId'],
+    aws_secret_access_key=credentials['SecretAccessKey'],
+    aws_session_token=credentials['SessionToken'],
+    region_name=region_name
+)
 
 
 ec2=session.client('ec2')
-
 tag_key= 'Environment'
 tag_value= 'Development'
 
@@ -52,9 +57,10 @@ with open(output_file,'w') as f:
             instance_id = instance['InstanceId']
             public_ip = instance.get('PublicIpAddress', 'No Public IP')
             ansible_user = 'ec2-user'
-            private_key_file = '/home/ec2-user/appkp.pem'
+            private_key_file = '/home/ec2-user/ansible_ec2_patching/appkp.pem'
 
             # Write each instance details in the desired format using %s formatting
+
             f.write("%s ansible_host=%s ansible_user=%s ansible_ssh_private_key_file=%s\n" %
                     (instance_id, public_ip, ansible_user, private_key_file))
 
