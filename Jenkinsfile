@@ -2,7 +2,8 @@ pipeline {
     agent any
     environment {
         ANSIBLE_HOST_KEY_CHECKING = 'False'
-        ANSIBLE_CONFIG = '/var/ansible.cfg'  
+        ANSIBLE_CONFIG = '/var/ansible.cfg' 
+	KEY = "$WORKSPACE/appkp
     }
     stages {
         stage ('Generate Inventory file') {

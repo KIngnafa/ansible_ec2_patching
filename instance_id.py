@@ -57,7 +57,7 @@ with open(output_file,'w') as f:
             instance_id = instance['InstanceId']
             public_ip = instance.get('PublicIpAddress', 'No Public IP')
             ansible_user = 'ec2-user'
-            private_key_file = '/home/ec2-user/ansible_ec2_patching/appkp.pem'
+            private_key_file = '$WORKSPACE/appkp.pem'
 
             # Write each instance details in the desired format using %s formatting
 
