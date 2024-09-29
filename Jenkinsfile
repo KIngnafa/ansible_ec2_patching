@@ -9,7 +9,7 @@ pipeline {
         stage ('Generate Inventory file') {
             steps {
                 sh '''
-		chmod +x $KEY
+		chmod 600 $KEY
 		echo $WORKSPACE
                 python3 $WORKSPACE/instance_id.py
 		
