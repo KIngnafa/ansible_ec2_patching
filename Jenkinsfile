@@ -3,7 +3,7 @@ pipeline {
     environment {
         ANSIBLE_HOST_KEY_CHECKING = 'False'
         ANSIBLE_CONFIG = '/var/ansible.cfg' 
-	KEY = "$WORKSPACE/appkp
+	KEY = "$WORKSPACE/appkp.pem"
     }
     stages {
         stage ('Generate Inventory file') {
