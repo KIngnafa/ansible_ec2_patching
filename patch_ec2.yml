@@ -1,0 +1,28 @@
+---
+- name: Patch EC2 instances tagged with Development
+  hosts: development
+  become: yes
+  tasks:
+   - name: Update and upgrade packages on RHEL/CentOS
+     yum:
+       name: '*'
+       state: latest
+     when: ansible_os_family == "RedHat"
+
+
+   - name: Update and upgrade packages on Debian/Ubuntu
+     apt:
+       upgrade: dist
+       update_cache: yes
+     when: ansible_os_family == "Debian"
+
+
+   - name: Reboot Server if needed
+     reboot:
+       msg: "Reboot initiated by ansible for patching"
+       connect_timeout: 5
+       reboot_timeout: 600
+       pre_reboot_delay: 0
+       post_reboot_delay: 30
+       test_command: whoami
+     when: ansible_facts['pkg_mgr'] in ['apt','yum']
