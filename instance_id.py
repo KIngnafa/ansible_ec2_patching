@@ -8,6 +8,17 @@ from botocore.exceptions import ClientError
 #setting environemt variables 
 os.environ["AWS_PROFILE"]="default"
 
+#assume role in dev account
+sts_client = boto3.client('sts')
+
+
+#requesting temporary credentials
+response_source=sts_client.assume_role(
+   RoleArn="arn:aws:iam::891377046654:role/Engineer"
+   RoleSessionName="Engineer@Dev")
+
+credentials = response['Credentials']
+
 session = boto3.Session()
 
 
